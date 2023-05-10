@@ -85,7 +85,7 @@ def main():
         gradient_clip_val=0.25,
         max_epochs=args.epochs,
         barebones=True,
-        # precision="8-mixed",
+        precision="8-mixed",
     )
 
     device = trainer.strategy.root_device

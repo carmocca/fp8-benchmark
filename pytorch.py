@@ -7,7 +7,7 @@ from datetime import datetime
 from lightning.pytorch.demos import WikiText2, Transformer
 
 
-# from transformer_engine import pytorch as te
+from transformer_engine import pytorch as te
 
 
 def train(args, model, device, train_loader, optimizer, epoch):
@@ -17,8 +17,8 @@ def train(args, model, device, train_loader, optimizer, epoch):
     t0 = time.perf_counter()
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
-        # with te.fp8_autocast(enabled=True):
-        output = model(data, target)
+        with te.fp8_autocast(enabled=True):
+            output = model(data, target)
         loss = torch.nn.functional.nll_loss(output, target.view(-1))
         loss.backward(loss)
         torch.nn.utils.clip_grad_value_(model.parameters(), 0.25)
@@ -43,8 +43,8 @@ def validate(model, device, loader):
     t0 = time.perf_counter()
     for data, target in loader:
         data, target = data.to(device), target.to(device)
-        # with te.fp8_autocast(enabled=True):
-        output = model(data, target)
+        with te.fp8_autocast(enabled=True):
+            output = model(data, target)
         loss += torch.nn.functional.nll_loss(output, target.view(-1), reduction="sum")
     t1 = time.perf_counter()
 

@@ -55,7 +55,7 @@ def main():
     args = parser.parse_args()
 
     seed_everything(args.seed)
-    fabric = Fabric(accelerator="cuda", devices=1)  # , precision="8-mixed")
+    fabric = Fabric(accelerator="cuda", devices=1, precision="8-mixed")
 
     print(torch.cuda.get_device_name(fabric.device), torch.cuda.get_device_capability(fabric.device))
     print(f"Train bs: {args.batch_size}, validate bs: {args.val_batch_size}")
